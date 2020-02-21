@@ -2,6 +2,7 @@
 #define __CONTROLLER_H__
 
 #include <stdlib.h>
+#include <stdint.h>
 #include "Decoder.h"
 
 #define LOAD 0
@@ -17,10 +18,6 @@
 
 typedef unsigned int control_signal;
 
-unsigned int check_one(unsigned int data, int BEGIN, int END);
-unsigned int validate_opcode(unsigned int opcode);
-void get_ctrl_signal(unsigned int opcode, Controller Ctrl);
-
 typedef struct {
     unsigned int ALUOp;
     control_signal Branch;
@@ -30,6 +27,11 @@ typedef struct {
     control_signal ALUSrc;
     control_signal RegWrite;
 } Controller;
+
+unsigned int check_one(unsigned int data, int BEGIN, int END);
+unsigned int validate_opcode(unsigned int opcode);
+void get_ctrl_signal(unsigned int opcode, Controller* Ctrl);
+
 
 
 #endif

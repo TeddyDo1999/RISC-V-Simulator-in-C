@@ -23,13 +23,17 @@ bool tickFunc(Core *core)
     core->instr_mem->decoder = decode_instruction(instruction);
 
     // (Step 3) Obtain control signals (Branch, MemRed, MemWrite, etc.)
-    get_ctrl_signal(core->instr_mem->decoder.opcode, core->controller);
+    get_ctrl_signal(core->instr_mem->decoder.opcode, &(core->controller));
+
+	/**********Test fetch operand function *******************/
+	core->regBlock.REG_VAL[core->instr_mem->decoder.rd] = 5;
+	/**********End test fetch ********************************/
 
     // (Step 4) Assign sources and destination to registers (fetch operands)
-    fetch_operands(core->instr_mem->decoder, core->controller, core->regBlock);
+	fetch_operands(&(core->instr_mem->decoder), &(core->controller), &(core->regBlock));
 
     // (Step N) Increment PC. FIXME, is it correct to always increment PC by 4?!
-    core->PC += 4;
+    core->PC = get_next_PC(core->PC, core->immediate, core->controller.Branch, core->ALU.zero);
 
     ++core->clk;
     // Are we reaching the final instruction?

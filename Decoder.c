@@ -51,4 +51,5 @@ Decoder decode_instruction(unsigned int instruction) {
     Code.rs1 = get_rs1(instruction);
     Code.rs2 = get_rs2(instruction);
     Code.funct7 = get_funct7(instruction);
+	return Code;
 }

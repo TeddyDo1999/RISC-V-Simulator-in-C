@@ -69,9 +69,9 @@ const char* REGISTER_NAME[NUM_OF_REGS] = {
         "f31"
 };
 
-void fetch_operands(Decoder decode, Controller Ctrl, Register Reg) {
-        Reg.pt_RegWrite = &Ctrl.RegWrite;
-        Reg.pt_rd = &Reg.REG_VAL[decode.rd];
-        Reg.pt_rs1 = &Reg.REG_VAL[decode.rs1];
-        Reg.pt_rs2 = &Reg.REG_VAL[decode.rs2];
+void fetch_operands(const Decoder* decode, const Controller* Ctrl, Register* Reg) {
+        Reg->pt_RegWrite = Ctrl->RegWrite;
+        Reg->pt_rd = Reg->REG_VAL[decode->rd];
+        Reg->pt_rs1 = Reg->REG_VAL[decode->rs1];
+        Reg->pt_rs2 = Reg->REG_VAL[decode->rs2];
 }

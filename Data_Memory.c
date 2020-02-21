@@ -10,7 +10,7 @@
         mem[address].data = writeData;
     } else if (memRead != 0) {
         //Read is permitted
-        *readOut = mem[address].data;
+        readOut->data = mem[address].data;
     } else {
         //Do nothing
     }

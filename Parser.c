@@ -1,13 +1,7 @@
+#include  <sys/types.h>
 #include "Parser.h"
 
-// FIXME, implement this function.
-//#define ADD 1
-//#define SUB 2
-//#define SLL 3
-//#define SRL 4
-//#define XOR 5
-//#define OR 6
-//#define AND 7
+
 
 
 
@@ -17,8 +11,7 @@ void loadInstructions(Instruction_Memory *i_mem, const char *trace)
     printf("Loading trace file: %s\n", trace);
 
     FILE *fd = fopen(trace, "r");
-    if (fd == NULL)
-    {
+    if (fd == NULL) {
         perror("Cannot open trace file. \n");
         exit(EXIT_FAILURE);
     }
@@ -34,9 +27,6 @@ void loadInstructions(Instruction_Memory *i_mem, const char *trace)
     {
         // Assign program counter
         i_mem->instructions[IMEM_index].addr = PC;
-        
-        char *line_copy;
-        strcpy(line_copy, line);
         
         printf("Current instruction %s ", line);
         // Extract operation
@@ -74,24 +64,17 @@ void loadInstructions(Instruction_Memory *i_mem, const char *trace)
         { //SB Type, opcode = 
             parseSBType(raw_instr, &(i_mem->instructions[IMEM_index]));
             i_mem->last = &(i_mem->instructions[IMEM_index]);
-        } /*else if
+        } else if
         (strcmp(raw_instr, "jal") == 0)
         { //UJ Type
             parseUJType(raw_instr, &(i_mem->instructions[IMEM_index]));
             i_mem->last = &(i_mem->instructions[IMEM_index]);
-        } */
-        
+        }         
         IMEM_index++;
         PC += 4;
     }
 
     fclose(fd);
-
-//    printf("Here is the list of all instructions translated: \n");
-//    int i;
-//    for (i=0; i< IMEM_index; i++) {
-
-  //  }
 
 }
 
@@ -100,6 +83,7 @@ void parseRType(char *opr, Instruction *instr)
 {
     instr->instruction = 0;
    
+    unsigned rd, rs_1, rs_2;
     unsigned opcode = 0; //opcode = 51 for R type
     unsigned funct3 = 0;
     unsigned funct7 = 0;
@@ -143,11 +127,11 @@ void parseRType(char *opr, Instruction *instr)
     if (SType == 1) {
         char *reg = strtok(NULL, ", ");
         printf("rs_1: %s\n", reg);
-        unsigned rs_1 = regIndex(reg);
+        rs_1 = regIndex(reg);
 
         reg = strtok(NULL, ", ");
         printf("rs2: %s\n", reg);
-        unsigned rs_2 = regIndex(reg);
+        rs_2 = regIndex(reg);
 
         reg = strtok(NULL, ", ");
         int imm = atoi(reg);
@@ -158,16 +142,16 @@ void parseRType(char *opr, Instruction *instr)
     else if (SType == 0)  {
         char *reg = strtok(NULL, ", ");
         printf("rd: %s\n", reg);
-        unsigned rd = regIndex(reg);
+        rd = regIndex(reg);
 
         reg = strtok(NULL, ", ");
         printf("rs1: %s\n", reg);
-        unsigned rs_1 = regIndex(reg);
+        rs_1 = regIndex(reg);
 
         reg = strtok(NULL, ", ");
         reg[strlen(reg)-1] = '\0';
         printf("rs2: %s\n", reg);
-        unsigned rs_2 = regIndex(reg);
+        rs_2 = regIndex(reg);
     }
 
     // Contruct instruction
@@ -183,7 +167,7 @@ void parseRType(char *opr, Instruction *instr)
 
 
 #define ARILOG 0 //Arithmetics and Logic
-#define LOAD 1
+#define Load 1
 #define NONEXISTENT 99
 
 //Insert parseI type, parse SB type and parse UJ type
@@ -201,7 +185,7 @@ instr->instruction = 0;
         opcode = 3;
         funct3 = 0b011;
         //f7 is not here
-        opr_branch = LOAD;
+        opr_branch = Load;
     } else if (strcmp(opr, "addi") == 0) {
         opcode = 19;
         funct3 = 0b000;
@@ -257,7 +241,7 @@ instr->instruction = 0;
         }
             
     //Example: ld rd, imm(rs1)
-    } else if (opr_branch == LOAD){ 
+    } else if (opr_branch == Load){ 
         char *reg = strtok(NULL, ", ");
         rd = regIndex(reg);
 
@@ -282,7 +266,7 @@ void parseSBType(char *opr, Instruction *instr){
     unsigned opcode = 0b1100011;
     unsigned funct3=0;
     unsigned rs_1, rs_2;
-    int imm=0, 
+    int imm=0; 
     unsigned imm12, imm11, imm105, imm41, field1, field2;
     //unsigned imm4 = 0x1F, imm11 = 0xFE0;
 
@@ -312,7 +296,7 @@ void parseSBType(char *opr, Instruction *instr){
     field1 = imm41 | imm11;
     field2 = (imm12 << 6) | imm105;
 
-    signed printImm = (imm4 | imm11) | (0xFFFFF << 12);
+    signed printImm = (imm41 | imm11) | (0xFFFFF << 12);
     printf("immediate : %d\n", printImm);
 
     instr->instruction |= opcode;

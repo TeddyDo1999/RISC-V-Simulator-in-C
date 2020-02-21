@@ -5,6 +5,10 @@
 #include "Registers.h"
 #include "Controller.h"
 #include "Imm_Gen.h"
+#include "Data_Memory.h"
+#include "Decoder.h"
+#include "Branch.c"
+#include "ALU_Control.c"
 
 #include <stdbool.h>
 #include <stdlib.h>
@@ -14,6 +18,7 @@
 
 struct Core;
 typedef struct Core Core;
+
 typedef struct Core
 {
     Tick clk; // Keep track of core clock
@@ -24,8 +29,10 @@ typedef struct Core
     Instruction_Memory *instr_mem;
     Controller controller;
     Register regBlock; // Cannot declare as "register" //
-    
-    
+    Cell *dataMem; 
+    Imm_Gen immediate;
+    ALU ALU;
+
     // TODO, simulation function
     bool (*tick)(Core *core);
 } Core;

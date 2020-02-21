@@ -4,7 +4,6 @@
 #include "Decoder.h"
 
 #include <stdint.h>
-#include <math.h>
 
 #define R_type 1
 #define I_type 2
@@ -13,10 +12,9 @@
 #define U_type 5
 #define UJ_type 6
 
-typedef struct {
-    int64_t Immediate;
-} Imm_Gen;
+typedef int64_t Imm_Gen;
 
+unsigned int power2(int START, int END);
 unsigned int partial_imm(unsigned int instruction, int START, int END);
 unsigned int get_imm(unsigned int instruction, unsigned int fmt_code);
 

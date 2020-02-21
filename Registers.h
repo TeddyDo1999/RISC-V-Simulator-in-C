@@ -17,7 +17,7 @@ typedef struct {
 } Register;
 
 // Fetch registers to operands //
-void fetch_operands(Decoder decode, Controller Ctrl, Register Reg);
+void fetch_operands(const Decoder* decode, const Controller* Ctrl, Register* Reg);
 
 // NEED STORE / WRITEBACK FUNCTION HERE //
 
