@@ -22,6 +22,6 @@ int64_t generate_32_to_64bit(unsigned int immediate, unsigned int fmt_code);
 
 unsigned int get_format(unsigned int opcode);
 
-int64_t generate_immediate(Decoder decode, int64_t Immediate);
+int64_t generate_immediate(Decoder decode);
 
 #endif

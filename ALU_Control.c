@@ -1,5 +1,4 @@
-#include "Controller.h"
-#include "Decoder.h"
+#include "ALU_Control.h"
 
 #define LD 20
 #define ADDI 1
@@ -114,12 +113,6 @@ unsigned int ALU_Control(unsigned int opcode, unsigned int func3, unsigned int f
         }
     }
 }
-
-typedef struct{
-    int64_t result;
-    unsigned int zero;
-}ALU; // output signals from ALU
-
 
 void ALU_block(unsigned int operation,int64_t opr1, int64_t opr2, ALU *outSig){
     //ALU outSig;

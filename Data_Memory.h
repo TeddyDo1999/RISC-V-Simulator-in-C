@@ -15,7 +15,10 @@ typedef struct
     Addr addr;
 } Cell;
 
-typedef Cell Data_mem[DATAMEM_SIZE];
 
+//typedef Cell Data_mem[DATAMEM_SIZE];
+
+int64_t Data_Mem(unsigned int memWrite, unsigned int memRead, uint64_t address, 
+            int64_t writeData, Cell* mem);
 
 #endif

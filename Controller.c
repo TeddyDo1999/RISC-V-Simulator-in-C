@@ -88,7 +88,7 @@ void get_ctrl_signal(unsigned int opcode, Controller* Ctrl) {
             Ctrl->MemtoReg = FALSE;
             Ctrl->MemRead = FALSE;
             Ctrl->MemWrite = FALSE;
-            Ctrl->ALUSrc = TRUE;
+            Ctrl->ALUSrc = FALSE;
             Ctrl->RegWrite = TRUE;
             break;
         case 0x6F:

@@ -7,8 +7,8 @@
 #include "Imm_Gen.h"
 #include "Data_Memory.h"
 #include "Decoder.h"
-#include "Branch.c"
-#include "ALU_Control.c"
+#include "Branch.h"
+#include "ALU_Control.h"
 
 #include <stdbool.h>
 #include <stdlib.h>
@@ -29,9 +29,9 @@ typedef struct Core
     Instruction_Memory *instr_mem;
     Controller controller;
     Register regBlock; // Cannot declare as "register" //
-    Cell *dataMem; 
+    Cell dataMem[DATAMEM_SIZE]; 
     Imm_Gen immediate;
-    ALU ALU;
+    ALU alu;
 
     // TODO, simulation function
     bool (*tick)(Core *core);

@@ -108,8 +108,8 @@ unsigned int get_format(unsigned int opcode) {
         return fmt_code;
 }
 
-int64_t generate_immediate(Decoder decode, int64_t Immediate) {
+int64_t generate_immediate(Decoder decode) {
     unsigned int fmt_code = get_format(decode.opcode);
     unsigned int immediate = get_imm(decode.instruction, fmt_code);
-    Immediate = generate_32_to_64bit(immediate,fmt_code);
+    int64_t Immediate = generate_32_to_64bit(immediate,fmt_code);
 }
