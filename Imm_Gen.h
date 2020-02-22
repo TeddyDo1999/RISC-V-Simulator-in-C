@@ -16,9 +16,9 @@ typedef int64_t Imm_Gen;
 
 unsigned int power2(int START, int END);
 unsigned int partial_imm(unsigned int instruction, int START, int END);
-unsigned int get_imm(unsigned int instruction, unsigned int fmt_code);
+int get_imm(unsigned int instruction, unsigned int fmt_code);
 
-int64_t generate_32_to_64bit(unsigned int immediate, unsigned int fmt_code);
+int64_t generate_32_to_64bit(int immediate, unsigned int fmt_code);
 
 unsigned int get_format(unsigned int opcode);
 

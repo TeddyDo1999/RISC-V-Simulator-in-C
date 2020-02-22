@@ -8,7 +8,7 @@
 #include "Data_Memory.h"
 #include "Decoder.h"
 #include "Branch.h"
-#include "ALU_Control.h"
+// #include "ALU_Control.h"
 
 #include <stdbool.h>
 #include <stdlib.h>

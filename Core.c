@@ -17,6 +17,7 @@ bool tickFunc(Core *core)
 {
     // Steps may include
     unsigned int operation;
+    Addr next_PC;
     // (Step 1) Reading instruction from instruction memory
     unsigned instruction = core->instr_mem->instructions[core->PC / 4].instruction;
     
@@ -45,21 +46,31 @@ bool tickFunc(Core *core)
 	}
 
 	// (Step 7) Write back , if else  to register or mem
+    next_PC = get_next_PC(core->PC, core->immediate, core->controller.Branch, core->alu.zero, core->controller.ALUSrc, core->alu);
+    
+    
+    
+    
     int64_t readDataFromMem = Data_Mem(core->controller.MemWrite, core->controller.MemRead, core->alu.result, 
             *(core->regBlock.pt_rs2), core->dataMem); //write to mem if memWrite=1, return data from Mem if memRead=1, return -1 if do not read
 
-	core->regBlock.pt_WriteData = &readDataFromMem;
-
-    if (core->controller.MemtoReg == 1) {
-        *core->regBlock.pt_rd = *(core->regBlock.pt_WriteData);
-    } else {
-        *core->regBlock.pt_rd = core->alu.result;
-    }
+    if (core->controller.RegWrite == 1) {
+          if (core->controller.MemtoReg == 1) {
+              core->regBlock.pt_WriteData = &readDataFromMem;
+              *core->regBlock.pt_rd = *(core->regBlock.pt_WriteData);
+          } else {
+              *core->regBlock.pt_rd = core->alu.result;
+          }
+  
+          if (next_PC != (core->PC + 4)) {
+          *core->regBlock.pt_rd = core->PC + 4;
+          }
+      }
 
 
 	// (Step 8) Increment PC. FIXME, is it correct to always increment PC by 4?!
-    core->PC = get_next_PC(core->PC, core->immediate, core->controller.Branch, core->alu.zero);
-
+    
+    core->PC = next_PC;
     ++core->clk;
     // Are we reaching the final instruction?
     if (core->PC > core->instr_mem->last->addr)

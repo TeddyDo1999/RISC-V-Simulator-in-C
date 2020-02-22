@@ -27,6 +27,7 @@ int main(int argc, const char *argv[])
     
     /* Task Three - Simulation */
     uint64_t arr[] = {16,128,8,4};
+    core->regBlock.REG_VAL[0] = 0;
     core->regBlock.REG_VAL[25] = 4;
     core->regBlock.REG_VAL[10] = 4;
     core->regBlock.REG_VAL[22] = 1;
@@ -43,7 +44,6 @@ int main(int argc, const char *argv[])
 
     printf("Simulation is finished.\n");
 
-    free(core->dataMem);
     free(core);    
 
 }

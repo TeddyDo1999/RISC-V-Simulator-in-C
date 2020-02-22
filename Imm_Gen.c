@@ -16,46 +16,53 @@ unsigned int partial_imm(unsigned int instruction, int START, int END) {
     return Imm_part;
 }
 
-unsigned int get_imm(unsigned int instruction, unsigned int fmt_code) {
+int get_imm(unsigned int instruction, unsigned int fmt_code) {
     if (fmt_code == I_type)
     {
-        return (instruction >> 20);
+        return (instruction >> 20) & 0b111111111111;
     }
     else if (fmt_code == S_type)
     {
-        unsigned int imm_11_5 = partial_imm(instruction, 11, 5);
-        unsigned int imm_4_0 = partial_imm(instruction,4,0);
+        int imm_11_5 = partial_imm(instruction, 31, 25);
+        int imm_4_0 = partial_imm(instruction,11,7);
         return ((imm_11_5 << 5) | imm_4_0);
     }
     else if (fmt_code == SB_type)
     {
-        unsigned int imm_11 = partial_imm(instruction,11,11);
-        unsigned int imm_10 = partial_imm(instruction,10,10);
-        unsigned int imm_9_4 = partial_imm(instruction,9,4);
-        unsigned int imm_3_0 = partial_imm(instruction,3,0);
-        return ((imm_11 << 11) | (imm_10 << 10) | (imm_9_4 << 4) | imm_3_0);    
+        int imm_12 = partial_imm(instruction,31,31);
+        int imm_11 = partial_imm(instruction,7,7);
+        int imm_10_5 = partial_imm(instruction,30,25);
+        int imm_4_1 = partial_imm(instruction,11,8);
+        return ((imm_12 << 13) | (imm_11 << 12) | (imm_10_5 << 6) | imm_4_1 << 2);    
     }
     else if (fmt_code == U_type)
     {
-        return (instruction >> 12);
+        int imm_31_12 = instruction >> 12;
+        return (imm_31_12 << 12);
     }
     else if (fmt_code == UJ_type)
     {
-        unsigned int imm_19 = partial_imm(instruction,19,19);
-        unsigned int imm_18_11 = partial_imm(instruction,18,11);
-        unsigned int imm_10_10 = partial_imm(instruction,10,10);
-        unsigned int imm_9_0 = partial_imm(instruction,9,0);
-        return ((imm_19 << 19)|(imm_18_11 << 11)|(imm_10_10 << 10)|(imm_9_0));
+        int imm_20 = partial_imm(instruction,31,31);
+        int imm_19_12 = partial_imm(instruction,19,12);
+        int imm_11_11 = partial_imm(instruction,20,20);
+        int imm_10_1 = partial_imm(instruction,30,21);
+        return ((imm_20 << 20)|(imm_19_12 << 12)|(imm_11_11 << 11)|(imm_10_1 << 1));
     }
     else {
         return -1;
     }
 }
 
-int64_t generate_32_to_64bit(unsigned int immediate, unsigned int fmt_code) {
+int64_t generate_32_to_64bit(int immediate, unsigned int fmt_code) {
     unsigned int imm_bitcount;
-    if ((fmt_code == U_type) || (fmt_code == UJ_type)) {
-        imm_bitcount = 20;
+    if (fmt_code == U_type) {
+        imm_bitcount = 32;
+    }
+    else if (fmt_code == UJ_type) {
+        imm_bitcount = 21;
+    }
+    else if (fmt_code == SB_type) {
+        imm_bitcount = 14;
     }
     else {
         imm_bitcount = 12;
@@ -66,11 +73,11 @@ int64_t generate_32_to_64bit(unsigned int immediate, unsigned int fmt_code) {
         return immediate64;
     }
     else {
-        int64_t bit_base = 1;
+        int64_t bit_base = 0b1;
         for (int i = 0; i < (64 - imm_bitcount); i++) {
-            bit_base = (bit_base << 1) & 0x1;
+            bit_base = (bit_base << 1) | 0b1;
         }
-        int64_t immediate64 = (int64_t)((bit_base << imm_bitcount) & immediate);
+        int64_t immediate64 = (int64_t)((bit_base << imm_bitcount) | immediate);
         return immediate64;
     }
 }
@@ -110,6 +117,7 @@ unsigned int get_format(unsigned int opcode) {
 
 int64_t generate_immediate(Decoder decode) {
     unsigned int fmt_code = get_format(decode.opcode);
-    unsigned int immediate = get_imm(decode.instruction, fmt_code);
+    int immediate = get_imm(decode.instruction, fmt_code);
     int64_t Immediate = generate_32_to_64bit(immediate,fmt_code);
+    return Immediate;
 }

@@ -161,7 +161,7 @@ void ALU_block(unsigned int operation,int64_t opr1, int64_t opr2, ALU *outSig){
             outSig->zero = 0;
         } else {
             outSig->result = 0;
-            outSig->result =1;
+            outSig->zero =1;
         }
     }  else if (operation == BGE) {
         if (opr1 >= opr2) {

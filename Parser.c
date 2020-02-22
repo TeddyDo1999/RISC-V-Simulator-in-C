@@ -172,7 +172,7 @@ void parseRType(char *opr, Instruction *instr)
 
 //Insert parseI type, parse SB type and parse UJ type
 void parseIType(char *opr, Instruction *instr ){
-instr->instruction = 0;
+    instr->instruction = 0;
 
     unsigned opcode = 0; //opcode differs on command
     unsigned funct3 = 0;
@@ -220,7 +220,7 @@ instr->instruction = 0;
         opcode = 103;
         funct3 = 0b000;
         //f7 is not here; 
-        opr_branch = ARILOG;
+        opr_branch = Load;
     }
     
     
@@ -263,12 +263,12 @@ instr->instruction = 0;
 }
 
 void parseSBType(char *opr, Instruction *instr){
+    instr->instruction = 0;
     unsigned opcode = 0b1100011;
     unsigned funct3=0;
     unsigned rs_1, rs_2;
     int imm=0; 
     unsigned imm12, imm11, imm105, imm41, field1, field2;
-    //unsigned imm4 = 0x1F, imm11 = 0xFE0;
 
     if (strcmp(opr, "beq") == 0) {
         funct3 = 0b000;
@@ -289,15 +289,17 @@ void parseSBType(char *opr, Instruction *instr){
 
     reg = strtok(NULL, ", ");
     imm = atoi(reg);
-    imm12 = (imm >> 12); 
-    imm11 = (imm >> 11) & 0b1;
-    imm41 = imm & 0b000000011110;
-    imm105 =imm & 0b111111100000;
-    field1 = imm41 | imm11;
+    imm12 = (imm >> 12);
+    imm12 = imm12 & 0b01; 
+    imm11 = (imm >> 11);
+    imm11 = imm11 & 0b01;
+    imm41 = (imm >> 1) & 0b01111;
+    imm105 = (imm >> 5) & 0b0111111;
+    field1 = (imm41 << 1) | imm11;
     field2 = (imm12 << 6) | imm105;
 
-    signed printImm = (imm41 | imm11) | (0xFFFFF << 12);
-    printf("immediate : %d\n", printImm);
+    //signed printImm = (imm41 | imm11) | (0xFFFFF << 12);
+    //printf("immediate : %d\n", printImm);
 
     instr->instruction |= opcode;
     instr->instruction |= ( field1 << 7);
@@ -310,6 +312,7 @@ void parseSBType(char *opr, Instruction *instr){
 }
 
 void parseUJType(char *opr, Instruction *instr){
+    instr->instruction = 0;
     unsigned opcode = 0b1101111;
     unsigned funct3=0;
     unsigned rd;
