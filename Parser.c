@@ -37,6 +37,7 @@ void loadInstructions(Instruction_Memory *i_mem, const char *trace)
             strcmp(raw_instr, "srl") == 0 ||
             strcmp(raw_instr, "xor") == 0 ||
             strcmp(raw_instr, "or")  == 0 ||
+            strcmp(raw_instr, "sd")  == 0 ||
             strcmp(raw_instr, "and") == 0)
         { //R type assembly commands
             parseRType(raw_instr, &(i_mem->instructions[IMEM_index]));
@@ -126,18 +127,15 @@ void parseRType(char *opr, Instruction *instr)
     
     if (SType == 1) {
         char *reg = strtok(NULL, ", ");
-        printf("rs_1: %s\n", reg);
-        rs_1 = regIndex(reg);
-
-        reg = strtok(NULL, ", ");
-        printf("rs2: %s\n", reg);
         rs_2 = regIndex(reg);
 
-        reg = strtok(NULL, ", ");
+        reg = strtok(NULL,"(");
         int imm = atoi(reg);
-        printf("imm: %s\n", reg);
         rd = imm & 0b000000011111; //imm[4:0]
         funct7 = (imm & 0b111111100000) >> 5; // imm[11:5]   
+
+        reg = strtok(NULL, ")");
+        rs_1 = regIndex(reg);
     }
     else if (SType == 0)  {
         char *reg = strtok(NULL, ", ");

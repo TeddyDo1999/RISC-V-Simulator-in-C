@@ -8,10 +8,10 @@ int64_t Data_Mem(unsigned int memWrite, unsigned int memRead, uint64_t address,
     int64_t readOut= -1;
     if (memWrite != 0){
         //Write is permitted. Let's write!
-        mem[address].data = writeData;
+        mem[address/8].data = writeData;
     } else if (memRead != 0) {
         //Read is permitted
-        readOut= mem[address].data;
+        readOut= mem[address/8].data;
     } else {
         //Do nothing
     }
