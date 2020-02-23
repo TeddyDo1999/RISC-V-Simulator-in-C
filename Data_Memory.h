@@ -10,7 +10,7 @@ typedef uint64_t Tick; //Might not be necessary
 
 typedef struct 
 {
-    unsigned int data; 
+    int64_t data; 
     //This binary format of data stored in 1 cell    
     Addr addr;
 } Cell;
