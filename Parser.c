@@ -139,16 +139,16 @@ void parseRType(char *opr, Instruction *instr)
     }
     else if (SType == 0)  {
         char *reg = strtok(NULL, ", ");
-        printf("rd: %s\n", reg);
+        //printf("rd: %s\n", reg);
         rd = regIndex(reg);
 
         reg = strtok(NULL, ", ");
-        printf("rs1: %s\n", reg);
+        //printf("rs1: %s\n", reg);
         rs_1 = regIndex(reg);
 
         reg = strtok(NULL, ", ");
         reg[strlen(reg)-1] = '\0';
-        printf("rs2: %s\n", reg);
+        //printf("rs2: %s\n", reg);
         rs_2 = regIndex(reg);
     }
 
@@ -280,7 +280,7 @@ void parseSBType(char *opr, Instruction *instr){
 
     char *reg = strtok(NULL, ", ");
     rs_1 = regIndex(reg);
-    printf("rs1: %s\n", reg);
+    //printf("rs1: %s\n", reg);
 
     reg = strtok(NULL, ", ");
     rs_2 = regIndex(reg);
@@ -319,7 +319,7 @@ void parseUJType(char *opr, Instruction *instr){
 
     char *reg = strtok(NULL, ", ");
     rd = regIndex(reg);
-    printf("rd: %s\n", reg);
+    //printf("rd: %s\n", reg);
 
     reg = strtok(NULL, ", ");
     imm = atoi(reg);

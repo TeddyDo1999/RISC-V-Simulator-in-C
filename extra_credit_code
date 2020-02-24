@@ -1,20 +1,19 @@
 addi x27, x0, 4
-addi x26, x0, 15
-slli x25, x26, 3
-sd x26, 0(x25)
-addi x26, x26, -1
-bne x26, x0, -3
 add x28, x0, x0
 add x10, x0, x0
 add x29, x0, x0
 slli x9, x28, 2
+addi x0, x0, 0
 add x9, x9, x29
 slli x8, x9, 3
 ld x11, 0(x8)
 sll x11, x11, x28
 add x10, x10, x11
 addi x29, x29, 1
-bne x27, x29, -6
-sd x10, 16(x28)
+bne x27, x29, -8
+addi x26, x28, 16
+slli x26, x26, 3
+sd x10, 0(x26)
 addi x28, x28, 1
-bne x27, x28, -11
+addi x0, x0, 0
+bne x27, x28, -16
