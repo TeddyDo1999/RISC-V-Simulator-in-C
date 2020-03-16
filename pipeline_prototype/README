@@ -1,0 +1,11 @@
+To run this program:
+    Basic: executing the simulator with the example_cpu_trace given in Project description
+    and program will print out values of x9 and x11
+        Do: make basic_sim
+
+    Advanced: for the extra credit part, the program will perform multiplying matrices using
+    an assembly code made by us 
+        Do: make extra_credit
+
+For more details: less Makefile
+
